@@ -11,7 +11,7 @@ To-Do List:
   - [ ] Reset groups option
   - [ ] Reset groups on pick?
   - [ ] Set datetime in command (remove hardcode)
-  - Pick interaction
+  Pick interaction
     - [ ] Are you sure? button?
     - [ ] Reset groups on pick
 - [ ] Other commands (maybe showing the schedule for the upcoming/ongoing season (these will be thought of at a later time))
