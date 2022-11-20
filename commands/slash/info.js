@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js')
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 const embeds = require('../../structure/embeds')
 
 module.exports = {
@@ -6,18 +6,20 @@ module.exports = {
 		.setName('info')
 		.setDescription('Bot info!'),
 	async execute(interaction) {
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setLabel('GitHub')
+					.setStyle(ButtonStyle.Link)
+					.setURL("https://github.com/iamasink/ctjambot"),
+			)
+
 		interaction.reply({
 			embeds: embeds.messageEmbed(
 				"CT Jam Bot",
 				`The Official Custom Track Jams Bot.\nWritten by **iamasink** and **Bearably**`
 			),
-			components: new ActionRowBuilder()
-				.addComponents(
-					new ButtonBuilder()
-						.setLabel('GitHub')
-						.setStyle(ButtonStyle.Link)
-						.setURL("https://github.com/iamasink/ctjambot"),
-				)
+			components: [row]
 		})
 	},
 }
