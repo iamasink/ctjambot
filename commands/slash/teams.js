@@ -16,7 +16,7 @@ module.exports = {
 	async execute(interaction) {
 		console.log(interaction)
 
-		await interaction.deferReply()
+		await interaction.deferReply({ ephemeral: true })
 		switch (interaction.options.getSubcommand()) {
 			case 'createmenu': {
 				const row = new ActionRowBuilder()
@@ -54,8 +54,8 @@ module.exports = {
 								},
 							),
 					)
-
-				await interaction.editReply({ embeds: embeds.messageEmbed(`Select the Modelling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
+				await interaction.editReply({ embeds: embeds.successEmbed(`Created menu`) })
+				await interaction.channel.send({ embeds: embeds.messageEmbed(`Select the Modelling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
 
 				break
 			}
@@ -165,7 +165,24 @@ module.exports = {
 
 				newdata.users = users
 				fs.writeFileSync(filepath, JSON.stringify(newdata))
-				await interaction.reply({ embeds: embeds.successEmbed(`Joined group ${interaction.values[0]}`) })
+				switch (interaction.values[0]) {
+					case 'blender': {
+						await interaction.reply({ embeds: embeds.successEmbed(`Joined group Blender`), ephemeral: true })
+						break
+					}
+					case 'sketchup': {
+						await interaction.reply({ embeds: embeds.successEmbed(`Joined group Sketchup`), ephemeral: true })
+						break
+					}
+					case '3dsmax': {
+						await interaction.reply({ embeds: embeds.successEmbed(`Joined group 3DS Max`), ephemeral: true })
+						break
+					}
+					default: {
+						throw new Error("what happened!")
+					}
+				}
+
 
 				break
 			}
