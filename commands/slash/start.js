@@ -19,7 +19,7 @@ module.exports = {
 					.addOptions(
 						{
 							label: 'Blender',
-							description: 'I use blender 😀',
+							description: 'I use Blender 😀',
 							value: 'blender',
 							emoji: {
 								name: 'Blender',
@@ -28,7 +28,7 @@ module.exports = {
 						},
 						{
 							label: 'Sketchup',
-							description: 'I use sketchup 😡',
+							description: 'I use Sketchup 😡',
 							value: 'sketchup',
 							emoji: {
 								name: 'Sketchup',
@@ -37,7 +37,7 @@ module.exports = {
 						},
 						{
 							label: '3DS Max',
-							description: 'I use the nintendo 3ds',
+							description: 'I use 3DS Max 🤓',
 							value: '3dsmax',
 							emoji: {
 								name: '3DSMax',
