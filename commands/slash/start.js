@@ -47,7 +47,7 @@ module.exports = {
 					),
 			)
 
-		await interaction.editReply({ embeds: embeds.messageEmbed(`Select the Modeling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
+		await interaction.editReply({ embeds: embeds.messageEmbed(`Select the Modelling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
 
 
 	},
