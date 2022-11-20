@@ -1,3 +1,3 @@
-# lilysbot
+# ctjambot
 
--gay
+The Official Custom Track Jams Bot
