@@ -52,6 +52,15 @@ module.exports = {
 										id: '1043722369719611483',
 									},
 								},
+								{
+									label: 'Mixed',
+									description: 'I will partner with any modelling program',
+									value: 'mixed',
+									emoji: {
+										name: 'Mixed',
+										id: '1043922497541779537',
+									},
+								},
 							),
 					)
 				await interaction.editReply({ embeds: embeds.successEmbed(`Created menu`) })
@@ -75,15 +84,17 @@ module.exports = {
 				// 		 'teams' refers to the teams of 2 users, who are all a part of one group
 
 
-				// set the three groups 😀
+				// set the four groups 😀
 				let blender = []
 				let sketchup = []
 				let dsmax = []
+				let mixed = []
 
-				// set the three teams, array of arrays of 2 users
+				// set the four teams, array of arrays of 2 users
 				let blenderteams = []
 				let sketchupteams = []
 				let dsmaxteams = []
+				let mixedteams = []
 
 				// sort the users into arrays for each program
 				// 		users is an object, so this runs for every key in the object.
@@ -106,15 +117,21 @@ module.exports = {
 							dsmax.push(key)
 							break
 						}
+						case 'mixed': {
+							mixed.push(key)
+							break
+						}
 					}
 				}
 				console.log(`blender: ${blender}`)
 				console.log(`sketchup: ${sketchup}`)
 				console.log(`3dsmax: ${dsmax}`)
+				console.log(`mixed: ${mixed}`)
 
 
-				teams = [blenderteams, sketchupteams, dsmaxteams]
-				groups = [blender, sketchup, dsmax]
+
+				teams = [blenderteams, sketchupteams, dsmaxteams, mixedteams]
+				groups = [blender, sketchup, dsmax, mixed]
 
 				// for each group,
 				for (let i = 0, len = groups.length; i < len; i++) {
@@ -184,6 +201,11 @@ module.exports = {
 				for (let i = 0, len = dsmaxteams.length; i < len; i++) {
 					console.log(dsmaxteams[i])
 				}
+				console.log(`mixed: `)
+				for (let i = 0, len = mixedteams.length; i < len; i++) {
+					console.log(mixedteams[i])
+				}
+
 
 
 
