@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder, EmbedBuilder } = require('discord.js')
-
+const fs = require('fs')
+const embeds = require('../../structure/embeds')
+const path = require('node:path')
 
 module.exports = {
 	permission: `botowner`,
@@ -36,9 +38,28 @@ module.exports = {
 
 		await interaction.editReply({ content: 'Pong!', components: [row] })
 
+
 	},
 	async menu(interaction) {
+		await interaction.deferReply({ ephemeral: true })
+		data = await fs.readFileSync(path.join(__dirname, '..', '..', 'data.json'))
+
+		newdata = JSON.parse(data)
+		users = newdata.users
+		//users.splice(users.findIndex(e => e.id === interaction.user.tag, 1, { "id": interaction.user.id, "value": interaction.values[0] }))
+		users[interaction.user.id] = interaction.values[0]
+
+
+		console.log(users)
 		console.log(interaction.user.id)
+		console.log(interaction.user.tag)
+		console.log(interaction.customId)
+		console.log(interaction.values[0])
+
+
+		await interaction.editReply({ embeds: embeds.successEmbed(`Joined group ${interaction.values[0]}`) })
+		newdata.users = users
+		fs.writeFileSync(path.join(__dirname, '..', '..', 'data.json'), JSON.stringify(newdata))
 
 	}
 }
