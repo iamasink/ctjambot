@@ -13,7 +13,7 @@ client = new Client({
 		"afk": true,
 		"activities": [
 			{
-				"name": "Custom Track Jams, Jellies and Turbo Jams!",
+				"name": "Custom Track Jams",
 				"type": ActivityType.Competing
 			}
 		]
