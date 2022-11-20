@@ -15,10 +15,9 @@ module.exports = {
 			.setDescription('Picks users from their selected teams')),
 	async execute(interaction) {
 		console.log(interaction)
-
-		await interaction.deferReply({ ephemeral: true })
 		switch (interaction.options.getSubcommand()) {
 			case 'createmenu': {
+				await interaction.deferReply({ ephemeral: true })
 				const row = new ActionRowBuilder()
 					.addComponents(
 						new SelectMenuBuilder()
@@ -27,7 +26,7 @@ module.exports = {
 							.addOptions(
 								{
 									label: 'Blender',
-									description: 'I use Blender 😀',
+									description: 'I am a Blender user and will partner with Blender users',
 									value: 'blender',
 									emoji: {
 										name: 'Blender',
@@ -36,7 +35,7 @@ module.exports = {
 								},
 								{
 									label: 'Sketchup',
-									description: 'I use Sketchup 😡',
+									description: 'I am a Sketchup user and will partner with Sketchup users',
 									value: 'sketchup',
 									emoji: {
 										name: 'Sketchup',
@@ -45,7 +44,7 @@ module.exports = {
 								},
 								{
 									label: '3DS Max',
-									description: 'I use 3DS Max 🤓',
+									description: 'I am a 3DS Max user and will partner with 3DS Max users',
 									value: '3dsmax',
 									emoji: {
 										name: '3DSMax',
@@ -69,6 +68,7 @@ module.exports = {
 				break
 			}
 			case 'pick': {
+				await interaction.deferReply()
 				console.log("bruhhhh")
 				// filepath is joined with path.join because LINUX SUCKS BIG BALLS
 				filepath = path.join(__dirname, '..', '..', '..', 'data.json')
@@ -129,12 +129,18 @@ module.exports = {
 				console.log(`mixed: ${mixed}`)
 
 
-
+				teamnames = ["Blender", "Sketchup", "3DS Max", "Mixed"]
 				teams = [blenderteams, sketchupteams, dsmaxteams, mixedteams]
 				groups = [blender, sketchup, dsmax, mixed]
 
 				// for each group,
 				for (let i = 0, len = groups.length; i < len; i++) {
+					// i is the index of groups, so
+					// 	0 = blender
+					// 	1 = sketchup
+					// 	2 = dsmax
+					// 	3 = mixed
+
 					let group = groups[i]
 					console.log(group)
 
@@ -144,8 +150,19 @@ module.exports = {
 						// TODO: this.
 						console.log("too short")
 
+						// get the user from the group
+						let user = group[0]
+						// push the user to the mixed group
+						groups[3].push(user)
+
+						// send the dm
+						let content = { embeds: embeds.messageEmbed(`You have been assigned to the Mixed group as there was no other partners available in your group.`) }
+						client.users.send(user, content)
+
+
 					} else {
 						// everyone can get a group (there may be a group of 3)
+						// for every user in this group
 						for (let j = 0, len = Math.floor(group.length / 2); j < len; j++) {
 							let user = group[j]
 							group.splice(0, 1) // remove the first user from the array
@@ -159,6 +176,17 @@ module.exports = {
 						}
 						if (group.length == 1) { // if there is only one user left, (but not to begin with, ie if teams exist)
 							// pick a random team for the remaining user
+							let index = Math.floor(Math.random() * group.length)
+							let randomteam = teams[i][index]
+
+							let user = group[0]
+							randomteam.push(user)
+
+							let content = { embeds: embeds.messageEmbed(`Your team has an extra teammate as they were unable to find a duo.`) }
+							// dm every member in this team
+							for (let n = 0, len = randomteam.length; n < len; n++) {
+								client.users.send(randomteam[n], content)
+							}
 						}
 					}
 
@@ -172,7 +200,8 @@ module.exports = {
 							console.log(team[m])
 							list += `<@${team[m]}>\n` // instead of fetching every user, we can just ping their ID.
 						}
-						let content = { embeds: embeds.messageEmbed("Your team for the CT Jelly!", `Here are your team members: \n${list}`) }
+						let teamname = teamnames[i]
+						let content = { embeds: embeds.messageEmbed(`Your **${teamname}** team for the CT Jelly!`, `Here are your team members: \n${list}`) }
 						console.log(list)
 
 						// dm every user in the team
@@ -210,7 +239,7 @@ module.exports = {
 
 
 
-
+				await interaction.editReply({ embeds: embeds.successEmbed("Teams picked!") })
 				break
 			}
 			default: {
@@ -252,6 +281,9 @@ module.exports = {
 					case '3dsmax': {
 						await interaction.reply({ embeds: embeds.successEmbed(`Joined group 3DS Max`), ephemeral: true })
 						break
+					}
+					case 'mixed': {
+						await interaction.reply({ embeds: embeds.successEmbed(`Joined group Mixed`), ephemeral: true })
 					}
 					default: {
 						throw new Error("what happened!")
