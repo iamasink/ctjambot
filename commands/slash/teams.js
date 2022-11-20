@@ -9,7 +9,12 @@ module.exports = {
 		.setDescription('configure teams')
 		.addSubcommand(command => command
 			.setName('createmenu')
-			.setDescription('Creates a team select menu'))
+			.setDescription('Creates a team select menu')
+			.addStringOption(option => option
+				.setName('datetime')
+				.setDescription('The time to show on the message, as a unix timestamp. Use *your* timezone when settings this!')
+				.setRequired(true))
+		)
 		.addSubcommand(command => command
 			.setName('pick')
 			.setDescription('Picks users from their selected teams')),
@@ -17,6 +22,8 @@ module.exports = {
 		console.log(interaction)
 		switch (interaction.options.getSubcommand()) {
 			case 'createmenu': {
+				let timestamp = interaction.options.getString('datetime')
+
 				await interaction.deferReply({ ephemeral: true })
 				const row = new ActionRowBuilder()
 					.addComponents(
@@ -63,7 +70,7 @@ module.exports = {
 							),
 					)
 				await interaction.editReply({ embeds: embeds.successEmbed(`Created menu`) })
-				await interaction.channel.send({ embeds: embeds.messageEmbed(`Select the Modelling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
+				await interaction.channel.send({ embeds: embeds.messageEmbed(`Select the Modelling program you use from the list to join the Jelly.\nTeams will be selected on <t:${timestamp}:f>.`), components: [row] })
 
 				break
 			}
