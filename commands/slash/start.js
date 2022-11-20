@@ -4,7 +4,6 @@ const embeds = require('../../structure/embeds')
 const path = require('node:path')
 
 module.exports = {
-	permission: `botowner`,
 	data: new SlashCommandBuilder()
 		.setName('start')
 		.setDescription('start the thingie!'),
@@ -22,27 +21,40 @@ module.exports = {
 							label: 'Blender',
 							description: 'I use blender 😀',
 							value: 'blender',
+							emoji: {
+								name: 'Blender',
+								id: '1043722412287606804',
+							}
 						},
 						{
 							label: 'Sketchup',
 							description: 'I use sketchup 😡',
 							value: 'sketchup',
+							emoji: {
+								name: 'Sketchup',
+								id: '1043722441878413353',
+							},
 						},
 						{
 							label: '3DS Max',
 							description: 'I use the nintendo 3ds',
 							value: '3dsmax',
+							emoji: {
+								name: '3DSMax',
+								id: '1043722369719611483',
+							},
 						},
 					),
 			)
 
-		await interaction.editReply({ content: 'Pong!', components: [row] })
+		await interaction.editReply({ embeds: embeds.messageEmbed(`Select the Modeling program you use from the list to join the Jelly.\nTeams will be selected on <t:1670180400:f>.`), components: [row] })
 
 
 	},
 	async menu(interaction) {
-		await interaction.deferReply({ ephemeral: true })
-		data = await fs.readFileSync(path.join(__dirname, '..', '..', 'data.json'))
+		filepath = path.join(__dirname, '..', '..', '..', 'data.json')
+		console.log(interaction.guild.emojis)
+		data = await fs.readFileSync(filepath)
 
 		newdata = JSON.parse(data)
 		users = newdata.users
@@ -57,9 +69,9 @@ module.exports = {
 		console.log(interaction.values[0])
 
 
-		await interaction.editReply({ embeds: embeds.successEmbed(`Joined group ${interaction.values[0]}`) })
 		newdata.users = users
-		fs.writeFileSync(path.join(__dirname, '..', '..', 'data.json'), JSON.stringify(newdata))
+		fs.writeFileSync(filepath, JSON.stringify(newdata))
+		await interaction.reply({ embeds: embeds.successEmbed(`Joined group ${interaction.values[0]}`) })
 
 	}
 }

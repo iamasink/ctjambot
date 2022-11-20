@@ -73,7 +73,7 @@ module.exports = {
 	 * @param {string} [color='#f9beca']
 	 * @return {*} 
 	 */
-	messageEmbed(title, description, fields, color = '#f9beca') {
+	messageEmbed(title, description, fields, color = '2ef6db') {
 		return embed(
 			color,
 			title,
