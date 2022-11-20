@@ -71,15 +71,24 @@ module.exports = {
 				users = newdata.users
 				console.log(users)
 
+				// note: 'groups' refers to the 3 groups of users (blender, sketchup, 3dsmax),
+				// 		 'teams' refers to the teams of 2 users, who are all a part of one group
+
+
 				// set the three groups 😀
 				let blender = []
 				let sketchup = []
 				let dsmax = []
 
+				// set the three teams, array of arrays of 2 users
+				let blenderteams = []
+				let sketchupteams = []
+				let dsmaxteams = []
 
-				// users is an object, so this runs for every key in the object.
-				// key is the id
-				// value is the choice
+				// sort the users into arrays for each program
+				// 		users is an object, so this runs for every key in the object.
+				// 		key is the user's id
+				// 		value is the user's choice
 				for (key in users) {
 					console.log(key)
 					let value = users[key]
@@ -104,12 +113,10 @@ module.exports = {
 				console.log(`3dsmax: ${dsmax}`)
 
 
-
-				// // sort the users into arrays for each program
-				// for (let i = 0, len = users.length; i < len; i++) {
-
-				// }
+				teams = [blenderteams, sketchupteams, dsmaxteams]
 				groups = [blender, sketchup, dsmax]
+
+				// for each group,
 				for (let i = 0, len = groups.length; i < len; i++) {
 					let group = groups[i]
 					console.log(group)
@@ -117,21 +124,67 @@ module.exports = {
 					// if theres is a lone user to begin with, they can't join a group, so theyre fucked
 					if (group.length == 1) {
 						// fuck off
+						// TODO: this.
 						console.log("too short")
 
 					} else {
-						// everyone can get a group (perhaps group of 3)
-						for (let j = 0, len = group.length; j < len; j++) {
-							let user = group[i]
-							// remove the first user from the array
-							group.splice(0, 1)
-							// picks a random user
-							let otheruser = group[Math.floor(Math.random() * group.length)]
-
+						// everyone can get a group (there may be a group of 3)
+						for (let j = 0, len = Math.floor(group.length / 2); j < len; j++) {
+							let user = group[j]
+							group.splice(0, 1) // remove the first user from the array
+							// picks a random other user
+							let index = Math.floor(Math.random() * group.length)
+							let otheruser = group[index]
+							group.splice(index, 1) // removes the user at index from the array
+							console.log(`picked user ${user} and ${otheruser}`)
+							teams[i].push([user, otheruser])
 
 						}
+						if (group.length == 1) { // if there is only one user left, (but not to begin with, ie if teams exist)
+							// pick a random team for the remaining user
+						}
 					}
+
+					// dm users their partner.
+					// for every team for the group,
+					for (let k = 0, len = teams[i].length; k < len; k++) {
+						team = teams[i][k]
+						// get the list of team members (remember there may be 1, 2 or 3 members.)
+						let list = ""
+						for (let m = 0, len = team.length; m < len; m++) {
+							console.log(team[m])
+							list += `<@${team[m]}>\n` // instead of fetching every user, we can just ping their ID.
+						}
+						let content = { embeds: embeds.messageEmbed("Your team for the CT Jelly!", `Here are your team members: \n${list}`) }
+						console.log(list)
+
+						// dm every user in the team
+						for (let l = 0, len = team.length; l < len; l++) {
+							console.log(`team: ${team}, user: ${team[l]}`)
+							console.log(team[l])
+							client.users.send(team[l], content)
+						}
+					}
+
+
+
+
 				}
+
+				console.log("picked teams!")
+				console.log(`blender:`)
+				for (let i = 0, len = blenderteams.length; i < len; i++) {
+					console.log(blenderteams[i])
+				}
+				console.log(`sketchup: `)
+				for (let i = 0, len = sketchupteams.length; i < len; i++) {
+					console.log(sketchupteams[i])
+				}
+				console.log(`3dsmax: `)
+				for (let i = 0, len = dsmaxteams.length; i < len; i++) {
+					console.log(dsmaxteams[i])
+				}
+
 
 
 
