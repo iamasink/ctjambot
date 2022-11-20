@@ -6,8 +6,8 @@ The Official Custom Track Jams Bot
 
 #### Main
 
-- [ ] Picking Teams for the Jelly
-- [ ] Messaging users their randomly selected partner
+- [x] Picking Teams for the Jelly
+- [x] Messaging users their randomly selected partner
 - [ ] Selecting groups of 3, 2 or 1 based on specific circumstances
   - i.e if a group has only 1 user or if there's not an even amount of people in a group
 
