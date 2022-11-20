@@ -1,4 +1,3 @@
-const database = require('../structure/database')
 const commands = require('../structure/commands')
 const embeds = require('../structure/embeds')
 const format = require('../structure/format')

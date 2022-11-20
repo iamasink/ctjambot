@@ -1,4 +1,3 @@
-const database = require("../structure/database")
 
 module.exports = {
 	name: 'ready',
@@ -6,7 +5,6 @@ module.exports = {
 	once: true,
 	// event logic, which will be called by the event handler whenever the event emits.
 	async execute(client) {
-		await database.setupDatabases(client)
 		console.log(`Ready! Logged in as ${client.user.tag}`)
 	},
 }

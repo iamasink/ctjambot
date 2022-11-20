@@ -5,7 +5,6 @@ const { REST } = require('@discordjs/rest')
 const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Routes, SlashCommandBuilder } = require('discord.js')
 const embeds = require('./embeds')
 const { permissions } = require('../config.json')
-const database = require('./database')
 
 function merge(a, b, prop) {
 	var reduced = a.filter(aitem => !b.find(bitem => aitem[prop] === bitem[prop]))
@@ -35,86 +34,7 @@ async function refreshGuildCommands(guildId) {
 	const rest = new REST({ version: '10' }).setToken(token)
 	commandList = []
 
-	dbpath = `.${guildId}.commands.aliases`
-	//await database.check(`guilds`, `.${guildId}`.commands)
-	//await database.check(`guilds`, `.${guildId}`.commands.aliases)
-
-	//aliases = await process.db.json.get(`guilds`, dbpath) || {}
-
-	aliases = await database.get(`guilds`, dbpath) || {}
 	commands = []
-	for (i in aliases) {
-		console.log(`i = ${i}`)
-		console.log(`aliases[i]: `)
-		console.log(aliases[i])
-		commandName = aliases[i].commandname
-		defaultoptions = aliases[i].defaultoptions
-		group = aliases[i].group
-		subcommand = aliases[i].subcommand
-		aliasName = i
-		//console.log(`${aliasName} => ${commandName}`)
-		let command = new SlashCommandBuilder()
-		console.log(typeof require(`../commands/slash/${commandName}`).data)
-		console.log(require(`../commands/slash/${commandName}`).data.toJSON())
-		data = require(`../commands/slash/${commandName}`).data.toJSON() //ty emily for fixing this ily <3<3<3<3<3<3<3
-		newcommanddata = data
-		//console.log(`${aliasName} => ${JSON.stringify(command)}`)
-		console.log(newcommanddata.options)
-
-		// get group and subcommand stuff
-		// flatten stuff, set main command to subcommand / bring subcommand up
-		if (group) {
-			console.log(`group = ${group}`)
-			newcommanddata.options = newcommanddata.options.find(element => element.name === group).options
-			console.log(newcommanddata.options)
-		}
-		if (subcommand) {
-			console.log(`subcommand = ${subcommand}`)
-			console.log("awawa")
-			newcommanddata.options = newcommanddata.options.find(element => element.name === subcommand).options
-			console.log(newcommanddata.options)
-		}
-		for (let i = 0; i < defaultoptions.length; i++) {
-			console.log(defaultoptions[i])
-		}
-		var a = newcommanddata.options
-		var b = defaultoptions
-		console.log("a")
-		console.log(a)
-		console.log("b")
-		console.log(b)
-		// 	remove item from a if it exists in b
-		var reduced = a.filter(aitem => !b.find(bitem => aitem["name"] === bitem["name"]))
-		newcommanddata.options = reduced
-
-		console.log(`new options:`)
-		console.log(newcommanddata.options)
-		console.log(newcommanddata)
-
-
-
-
-
-		// adjust guild command 
-		// 	change name to alias name
-		newcommanddata.name = aliasName
-		// 	remove options set in defaultoptions from the command
-		console.log(defaultoptions)
-		// var a = command.data.options
-		// var b = options
-		// // 	remove item from a if it exists in b
-		// var reduced = a.filter(aitem => !b.find(bitem => aitem["name"] === bitem["name"]))
-		// command.data.options = reduced
-		// console.log("merged")
-		// console.log(reduced)
-
-
-		newcommand = newcommanddata
-
-
-		//console.log(`${i}: ${JSON.stringify(command)}`)
-		commandList.push(newcommand)
-	}
 
 	console.log(commandList)
 

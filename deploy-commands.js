@@ -31,12 +31,12 @@ commands.deploy()
 // async function refreshGuildCommands(guildId) {
 // 	commandList = {}
 // 	path = `.${guildId}.commands.aliases`
-// 	//await database.check(`guilds`, `.${guildId}`.commands)
-// 	//await database.check(`guilds`, `.${guildId}`.commands.aliases)
+// 	//await database.check(`ctjamdata`, `.${guildId}`.commands)
+// 	//await database.check(`ctjamdata`, `.${guildId}`.commands.aliases)
 
-// 	aliases = await process.db.get(`guilds`, path) || {}
+// 	aliases = await process.db.get(`ctjamdata`, path) || {}
 // 	console.log(`aliases: ${JSON.stringify(aliases)}`)
-// 	//database.set(`guilds`, path + `.xp`, newXp)
+// 	//database.set(`ctjamdata`, path + `.xp`, newXp)
 
 // 	// try {
 // 	// 	console.log(`Finished refreshing ${commandList.length} guild application (/) commands.`)

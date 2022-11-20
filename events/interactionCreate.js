@@ -1,7 +1,6 @@
 const { PermissionsBitField, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 const embeds = require('../structure/embeds')
 const { permissions } = require('../config.json')
-const database = require('../structure/database')
 const commands = require('../structure/commands')
 
 
@@ -25,19 +24,8 @@ module.exports = {
 
 
 
-			// checks if the command is an aliased (guild) command
-			dbpath = `.${guildID}.commands.aliases`
-			aliases = await database.get(`guilds`, dbpath)
-			//console.log(`aliases: ${JSON.stringify(aliases)}`)
-			const aliasedCommand = aliases[interaction.commandName]
-			//console.log(aliasedCommand)
-			if (aliasedCommand) {
-				commands.run(interaction, aliasedCommand.commandname, aliasedCommand.group, aliasedCommand.subcommand, aliasedCommand.defaultoptions)
+			commands.run(interaction)
 
-			} else {
-				commands.run(interaction)
-
-			}
 
 		} else if (interaction.isUserContextMenuCommand()) {
 			// gets the (global) command data from the interaction
