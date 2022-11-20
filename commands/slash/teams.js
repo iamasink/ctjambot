@@ -3,6 +3,22 @@ const fs = require('fs')
 const embeds = require('../../structure/embeds')
 const path = require('node:path')
 
+function createTeams(group, team) {
+	for (let j = 0, len = Math.floor(group.length / 2); j < len; j++) {
+		let user = group[0]
+		group.splice(0, 1) // remove the user from the array
+
+		// picks a random other user
+		let index = Math.floor(Math.random() * group.length)
+		let otheruser = group[index]
+		console.log(`index = ${index}`)
+		group.splice(index, 1) // removes the user at index from the array
+		console.log(`picked user ${user} and ${otheruser}`)
+		team.push([user, otheruser])
+	}
+}
+
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('teams')
@@ -75,7 +91,7 @@ module.exports = {
 				break
 			}
 			case 'pick': {
-				await interaction.deferReply()
+				await interaction.deferReply({ ephemeral: true })
 				console.log("bruhhhh")
 				// filepath is joined with path.join because LINUX SUCKS BIG BALLS
 				filepath = path.join(__dirname, '..', '..', '..', 'data.json')
@@ -152,47 +168,65 @@ module.exports = {
 					console.log(group)
 
 					// if theres is a lone user to begin with, they can't join a group, so theyre fucked
-					if (group.length == 1) {
-						// fuck off
-						// TODO: this.
-						console.log("too short")
+					// if (group.length == 1) {
+					// 	// fuck off
+					// 	// TODO: this.
+					// 	console.log("too short")
 
-						// get the user from the group
-						let user = group[0]
-						// push the user to the mixed group
-						groups[3].push(user)
+					// 	// get the user from the group
+					// 	let user = group[0]
+					// 	// push the user to the mixed group
+					// 	groups[3].push(user)
+					// 	group.splice(0, 1)
 
-						// send the dm
-						let content = { embeds: embeds.messageEmbed(`You have been assigned to the Mixed group as there was no other partners available in your group.`) }
-						client.users.send(user, content)
+					// 	// send the dm
+					// 	let content = { embeds: embeds.messageEmbed(`You have been assigned to the Mixed group as there was no other partners available in your group.`) }
+					// 	client.users.send(user, content)
 
 
-					} else {
-						// everyone can get a group (there may be a group of 3)
-						// for every user in this group
-						for (let j = 0, len = Math.floor(group.length / 2); j < len; j++) {
-							let user = group[j]
-							group.splice(0, 1) // remove the first user from the array
-							// picks a random other user
-							let index = Math.floor(Math.random() * group.length)
-							let otheruser = group[index]
-							group.splice(index, 1) // removes the user at index from the array
-							console.log(`picked user ${user} and ${otheruser}`)
-							teams[i].push([user, otheruser])
+					// everyone can get a group (there may be a group of 3)
+					// for every user in this group
+					createTeams(group, teams[i])
+					if (group.length == 1) { // if there is only one user left, (but not to begin with, ie if teams exist)
+						if (i != 3) { // move to mixed group
 
-						}
-						if (group.length == 1) { // if there is only one user left, (but not to begin with, ie if teams exist)
-							// pick a random team for the remaining user
-							let index = Math.floor(Math.random() * group.length)
-							let randomteam = teams[i][index]
-
+							// get the user from the group
 							let user = group[0]
-							randomteam.push(user)
-
+							// push the user to the mixed group
+							groups[3].push(user)
+							group.splice(0, 1)
+						} else {
+							// if mixed
+							// move them back to their original group
+							user = group[0]
+							let oldgroup = users[user]
+							// pick a random team for the remaining user
 							let content = { embeds: embeds.messageEmbed(`Your team has an extra teammate as they were unable to find a duo.`) }
-							// dm every member in this team
-							for (let n = 0, len = randomteam.length; n < len; n++) {
-								client.users.send(randomteam[n], content)
+							switch (oldgroup) {
+								case 'blender': {
+									groups[0].push(user)
+									moveToRandomTeam(blenderteams, user, content)
+									group.splice(0, 1)
+									break
+								}
+								case 'sketchup': {
+									groups[1].push(user)
+									moveToRandomTeam(sketchupteams, user, content)
+									group.splice(0, 1)
+									break
+								}
+								case 'dsmax': {
+									groups[2].push(user)
+									moveToRandomTeam(dsmaxteams, user, content)
+									group.splice(0, 1)
+									break
+								}
+								case 'mixed': {
+									groups[3].push(user)
+									moveToRandomTeam(mixedteams, user, content)
+									group.splice(0, 1)
+									break
+								}
 							}
 						}
 					}
@@ -218,10 +252,6 @@ module.exports = {
 							client.users.send(team[l], content)
 						}
 					}
-
-
-
-
 				}
 
 				console.log("picked teams!")
@@ -243,16 +273,16 @@ module.exports = {
 				}
 
 
-
-
-
-				await interaction.editReply({ embeds: embeds.successEmbed("Teams picked!") })
+				await interaction.editReply({ embeds: embeds.successEmbed("Teams picked!"), ephemeral: true })
 				break
 			}
+
 			default: {
-				throw new Error("wtf")
+				throw new Error("not a subcommand??")
 			}
 		}
+
+
 
 
 	},
@@ -305,5 +335,16 @@ module.exports = {
 			}
 		}
 
+	}
+}
+
+function moveToRandomTeam(teamslist, user, content) {
+	let index = Math.floor(Math.random() * teamslist.length)
+	let randomteam = teamslist[index]
+
+	randomteam.push(user)
+	// dm every member in the team
+	for (let n = 0, len = randomteam.length; n < len; n++) {
+		client.users.send(randomteam[n], content)
 	}
 }

@@ -26,3 +26,10 @@ The Official Custom Track Jams Bot
 
 - [ ] Other commands (maybe showing the schedule for the upcoming/ongoing season (these will be thought of at a later time))
 - [ ] Suggestions from the CT Jams Team
+
+### Logic stuff
+
+- team up everyone into teams of 2
+- everyone remaining (maximum 1 of each group) get moved to mixed
+- team up mixed into teams of 2
+- if someone remains in mixed, move them back to their original group, and join a random team (to make a trio)
