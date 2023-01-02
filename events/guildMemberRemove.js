@@ -15,7 +15,7 @@ module.exports = {
 		console.log(`${member.id} has left guild ${member.guild}`)
 		const embed = new EmbedBuilder()
 			.setColor('#ff0000')
-			.setTitle(`${member.user.tag} Left.`)
+			.setTitle(`${member.user.username} Left.`)
 			.setDescription(`They were a member for ${format.time(Date.now() - member.joinedTimestamp)}.\nJoined on <t:${member.joinedTimestamp.toString().slice(0, -3)}:f>`)
 			.setThumbnail(member.user.avatarURL(true))
 		member.guild.systemChannel.send({ embeds: [embed] })

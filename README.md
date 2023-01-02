@@ -4,7 +4,6 @@ The Official Custom Track Jams Bot
 
 ### To-Do List:
 
-#### Main
 
 - [x] Picking Teams for the Jelly
 - [x] Messaging users their randomly selected partner

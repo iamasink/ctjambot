@@ -13,7 +13,6 @@ module.exports = {
 					.setStyle(ButtonStyle.Link)
 					.setURL("https://github.com/iamasink/ctjambot"),
 			)
-
 		interaction.reply({
 			embeds: embeds.messageEmbed(
 				"CT Jam Bot",
